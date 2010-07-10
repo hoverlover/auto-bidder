@@ -92,7 +92,15 @@ def parse_command_line
   
   if options[:username]
     print "Auction site password:"
-    options[:password] = gets.chomp
+    
+    # turn off terminal echo briefly
+    begin
+      system "stty -echo"
+      options[:password] = gets.chomp
+      puts # carriage return so the first log statement isn't printed on the same line as the password prompt
+    ensure
+      system "stty echo"
+    end
   end
   
   $log = Logger.new(STDOUT)
